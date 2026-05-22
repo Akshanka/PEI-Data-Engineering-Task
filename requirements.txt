@@ -1,0 +1,7 @@
+pandas==2.2.3
+openpyxl==3.1.5
+databricks-labs-dqx
+databricks-sdk
+PyYAML
+pytest
+chispa

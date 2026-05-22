@@ -1,0 +1,55 @@
+{
+  "catalog": "dev",
+
+  "source": {
+    "base_path": "/Volumes/dev/landing/landing_zone",
+    "files": {
+      "orders": {
+        "file_name": "Orders.json",
+        "format": "json"
+      },
+      "customers": {
+        "file_name": "Customer.xlsx",
+        "format": "excel"
+      },
+      "products": {
+        "file_name": "Products.csv",
+        "format": "csv"
+      }
+    }
+  },
+
+  "raw": {
+    "schema": "raw",
+    "tables": {
+      "orders": "raw_orders",
+      "customers": "raw_customers",
+      "products": "raw_products"
+    }
+  },
+
+   "refined": {
+    "schema": "refined",
+    "tables": {
+      "orders": "refined_orders",
+      "customers": "refined_customers",
+      "products": "refined_products"
+    }
+  },
+
+  "enriched": {
+    "schema": "enriched",
+    "tables": {
+      "customers": "enriched_customers",
+      "products": "enriched_products",
+      "orders": "fact_orders_enriched"
+    }
+  },
+
+  "aggregate": {
+    "schema": "aggregate",
+    "tables": {
+      "profit_by_year_category_subcategory_customer": "agg_profit_by_year_category_subcategory_customer"
+    }
+  }
+}
