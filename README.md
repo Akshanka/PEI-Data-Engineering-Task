@@ -48,6 +48,40 @@ PEI-Data-Engineering-Task/
 
 ---
 
+## Data Pipeline Architecture
+
+### Layers
+
+1. **Raw Layer** (`dev.raw.*`)
+   * Ingests data from source files (JSON, CSV, Excel)
+   * Preserves original data types (all strings)
+   * Adds audit columns: `source_file_name`, `ingestion_timestamp`
+
+2. **Refined Layer** (`dev.refined.*`)
+   * Cleans and standardizes data
+   * Applies data type casting with `try_cast`
+   * Trims whitespace, formats dates
+   * Tables: `refined_orders`, `refined_customers`, `refined_products`
+
+3. **Enriched Layer** (`dev.enriched.*`)
+   * Applies business logic and joins
+   * Creates denormalized fact and dimension tables
+   * Tables: `enriched_customers`, `enriched_products`, `enriched_orders`
+
+4. **Aggregate Layer** (`dev.aggregate.*`)
+   * Pre-computed aggregations for analytics
+   * Tables: `profit_aggregate`
+
+### Data Quality
+
+* YAML-based rule definitions in `config/dq_rules/`
+* Uses Databricks DQX framework
+* Splits data into valid and quarantine tables
+* Enables automated data quality monitoring
+
+---
+
+
 ## Function Documentation
 
 ### 1. `src/utils/common.py`
@@ -600,39 +634,6 @@ pytest tests/test_refined.py::test_transform_refined_orders -v
 ```bash
 pytest tests/ --cov=src --cov-report=html
 ```
-
----
-
-## Data Pipeline Architecture
-
-### Layers
-
-1. **Raw Layer** (`dev.raw.*`)
-   * Ingests data from source files (JSON, CSV, Excel)
-   * Preserves original data types (all strings)
-   * Adds audit columns: `source_file_name`, `ingestion_timestamp`
-
-2. **Refined Layer** (`dev.refined.*`)
-   * Cleans and standardizes data
-   * Applies data type casting with `try_cast`
-   * Trims whitespace, formats dates
-   * Tables: `refined_orders`, `refined_customers`, `refined_products`
-
-3. **Enriched Layer** (`dev.enriched.*`)
-   * Applies business logic and joins
-   * Creates denormalized fact and dimension tables
-   * Tables: `enriched_customers`, `enriched_products`, `enriched_orders`
-
-4. **Aggregate Layer** (`dev.aggregate.*`)
-   * Pre-computed aggregations for analytics
-   * Tables: `profit_aggregate`
-
-### Data Quality
-
-* YAML-based rule definitions in `config/dq_rules/`
-* Uses Databricks DQX framework
-* Splits data into valid and quarantine tables
-* Enables automated data quality monitoring
 
 ---
 
