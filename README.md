@@ -668,18 +668,6 @@ ORDER BY customer_name, order_year;
 
 ---
 
-## Key Design Decisions
-
-1. **Test-Driven Development:** Comprehensive unit tests cover all transformation logic
-2. **Type Safety:** Using `try_cast` instead of `cast` to handle invalid data gracefully
-3. **Data Quality:** DQX framework integration for automated validation
-4. **Medallion Architecture:** Raw → Refined → Enriched → Aggregate layers
-5. **Auditability:** Tracking source files and ingestion timestamps
-6. **Idempotency:** Overwrite mode for rerunnable pipelines
-7. **Precision:** Using `DECIMAL(18,2)` for financial calculations
-
----
-
 ## Technologies Used
 
 * **Databricks** - Cloud data platform
@@ -694,6 +682,6 @@ ORDER BY customer_name, order_year;
 
 ## Author
 
-Akshay Galaxy (akshaygalaxy23@gmail.com)
+Akshay Shankar (akshaygalaxy23@gmail.com)
 
 **Assessment:** PEI Senior Data Engineer Task
