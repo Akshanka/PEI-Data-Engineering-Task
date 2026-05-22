@@ -94,7 +94,181 @@ PEI-Data-Engineering-Task/
 * Enables automated data quality monitoring
 
 ---
+## Execution Process
 
+The notebooks should be executed in sequence from `01_setup.ipynb` to `08_run_unit_tests.ipynb`.
+
+### 01_setup.ipynb
+
+**Purpose:**  
+Creates the required catalog, schemas, and Delta tables.
+
+**What it does:**
+- Reads `config/dev_config.json`
+- Creates raw, refined, enriched, and aggregate schemas
+- Creates raw Delta tables
+- Creates refined Delta tables
+- Creates enriched customer, product, and order tables
+- Creates aggregate profit table
+- Validates that source files are available
+
+---
+
+### 02_raw_load.ipynb
+
+**Imports from `src.utils.common`:**
+- `read_config`
+- `build_source_path`
+- `build_table_name`
+- `read_json_file`
+- `read_csv_file`
+- `read_excel_file`
+- `standardize_column_names`
+- `add_ingestion_columns`
+- `write_delta_table`
+
+**Purpose:**  
+Loads the source datasets into raw Delta tables.
+
+**What it does:**
+- Reads orders JSON file
+- Reads customers Excel file
+- Reads products CSV file
+- Standardizes column names
+- Adds `source_file_name`
+- Adds `ingestion_timestamp`
+- Writes the data into raw Delta tables
+
+---
+
+### 03_refined_load.ipynb
+
+**Imports from `src.utils.common`:**
+- `read_config`
+- `build_table_name`
+- `write_delta_table`
+
+**Imports from `src.transformations.refined`:**
+- `transform_refined_orders`
+- `transform_refined_customers`
+- `transform_refined_products`
+
+**Imports from `src.utils.dqx_utils`:**
+- `apply_dq_checks`
+
+**Purpose:**  
+Creates cleaned and validated refined tables.
+
+**What it does:**
+- Reads raw orders, customers, and products
+- Applies trimming and datatype casting
+- Converts date columns
+- Applies DQX validation rules
+- Writes valid records into refined tables
+- Writes invalid records into quarantine tables
+
+---
+
+### 04_enriched_dimensions.ipynb
+
+**Imports from `src.utils.common`:**
+- `read_config`
+- `build_table_name`
+- `write_delta_table`
+
+**Imports from `src.transformations.customers`:**
+- `transform_enriched_customers`
+
+**Imports from `src.transformations.products`:**
+- `transform_enriched_products`
+
+**Purpose:**  
+Creates enriched customer and product dimension tables.
+
+**What it does:**
+- Reads refined customers
+- Reads refined products
+- Creates enriched customer table
+- Creates enriched product table
+
+---
+
+### 05_orders_enriched.ipynb
+
+**Imports from `src.utils.common`:**
+- `read_config`
+- `build_table_name`
+- `write_delta_table`
+
+**Imports from `src.transformations.orders`:**
+- `transform_enriched_orders`
+
+**Purpose:**  
+Creates the enriched orders fact table.
+
+**What it does:**
+- Reads refined orders
+- Reads enriched customers
+- Reads enriched products
+- Joins order data with customer and product details
+- Adds customer name and country
+- Adds product category and sub-category
+- Derives order year
+- Rounds profit to 2 decimal places
+- Writes enriched orders table
+
+---
+
+### 06_aggregate_profit.ipynb
+
+**Imports from `src.utils.common`:**
+- `read_config`
+- `build_table_name`
+- `write_delta_table`
+
+**Imports from `src.transformations.aggregations`:**
+- `transform_profit_aggregate`
+
+**Purpose:**  
+Creates the aggregate profit table.
+
+**What it does:**
+- Reads enriched orders
+- Groups data by year, product category, product sub-category, and customer
+- Calculates total profit
+- Writes aggregate profit table
+
+---
+
+### 07_sql_outputs.ipynb
+
+**Purpose:**  
+Generates the final SQL reporting outputs.
+
+**What it does:**
+- Profit by Year
+- Profit by Year + Product Category
+- Profit by Customer
+- Profit by Customer + Year
+
+---
+
+### 08_run_unit_tests.ipynb
+
+**Purpose:**  
+Runs the unit test suite from Databricks.
+
+**What it does:**
+- Installs required test dependencies if needed
+- Runs pytest test cases from the `tests/` folder
+- Validates utility functions
+- Validates refined transformations
+- Validates enriched dimension logic
+- Validates enriched orders logic
+- Validates aggregate profit logic
+- Validates DQX helper functions
+
+---
 
 ## Function Documentation
 
