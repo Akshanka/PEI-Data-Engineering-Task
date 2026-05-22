@@ -1,0 +1,21 @@
+- criticality: error
+  check:
+    function: is_not_null_and_not_empty
+    for_each_column:
+      - product_id
+      - product_name
+      - category
+      - sub_category
+
+- criticality: warn
+  check:
+    function: is_not_null
+    for_each_column:
+      - price_per_product
+
+- criticality: error
+  check:
+    function: is_unique
+    arguments:
+      columns:
+        - product_id

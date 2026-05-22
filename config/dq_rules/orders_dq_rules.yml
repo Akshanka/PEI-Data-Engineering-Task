@@ -1,0 +1,24 @@
+- criticality: error
+  check:
+    function: is_not_null_and_not_empty
+    for_each_column:
+      - order_id
+      - customer_id
+      - product_id
+
+- criticality: error
+  check:
+    function: is_not_null
+    for_each_column:
+      - order_date
+      - ship_date
+      - quantity
+      - price
+
+- criticality: warn
+  check:
+    function: is_not_null
+
+    
+    for_each_column:
+      - profit

@@ -1,0 +1,12 @@
+- criticality: error
+  check:
+    function: is_not_null_and_not_empty
+    for_each_column:
+      - customer_id
+
+- criticality: error
+  check:
+    function: is_unique
+    arguments:
+      columns:
+        - customer_id
