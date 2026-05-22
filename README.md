@@ -16,7 +16,7 @@ This project implements a data processing system using Databricks and PySpark fo
 * Follows test-driven development practices
 
 ## Project Structure
-
+```
 PEI-Data-Engineering-Task/
 ├── config/
 │   ├── dev_config.json              # Environment configuration
