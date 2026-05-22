@@ -17,33 +17,47 @@ This project implements a data processing system using Databricks and PySpark fo
 
 ## Project Structure
 
-```
 PEI-Data-Engineering-Task/
 ├── config/
 │   ├── dev_config.json              # Environment configuration
-│   └── dq_rules/                    # Data quality rules in YAML
+│   └── dq_rules/                    # Data quality rules in YAML format
 │       ├── orders_dq_rules.yml
 │       ├── customers_dq_rules.yml
 │       └── products_dq_rules.yml
+│
+├── notebook/                        # Databricks notebooks executed in sequence
+│   ├── 01_setup.ipynb               # Creates catalog, schemas and Delta tables
+│   ├── 02_raw_load.ipynb            # Loads source datasets into raw Delta tables
+│   ├── 03_refined_load.ipynb        # Cleans, casts and validates raw data using DQX
+│   ├── 04_enriched_dimensions.ipynb # Creates enriched customer and product dimension tables
+│   ├── 05_orders_enriched.ipynb     # Creates enriched orders fact table
+│   ├── 06_aggregate_profit.ipynb    # Creates aggregate profit table
+│   ├── 07_sql_outputs.ipynb         # SQL reporting outputs for business analysis
+│   └── 08_unit_tests.ipynb          # Executes PySpark unit tests using pytest
+│
 ├── src/
-│   ├── utils/                       # Utility functions
-│   │   ├── common.py               # File I/O, config, transformations
-│   │   └── dqx_utils.py            # Data quality functions
-│   └── transformations/            # Data transformation logic
-│       ├── refined.py              # Refined layer (cleaning)
-│       ├── customers.py            # Enriched customers
-│       ├── products.py             # Enriched products
-│       ├── orders.py               # Enriched orders (joins)
-│       └── aggregations.py         # Profit aggregations
-├── tests/                          # Unit tests
-│   ├── conftest.py                # Pytest configuration
-│   ├── test_common.py
-│   ├── test_dqx_utils.py
-│   ├── test_refined.py
-│   ├── test_enriched_dimensions.py
-│   ├── test_enriched_orders.py
-│   └── test_aggregations.py
-└── requirements.txt               # Python dependencies
+│   ├── utils/                       # Common reusable utility functions
+│   │   ├── common.py                # Config reading, file reading, metadata and Delta write helpers
+│   │   └── dqx_utils.py             # DQX rule loading and validation helper functions
+│   │
+│   └── transformations/             # PySpark transformation logic
+│       ├── refined.py               # Raw to refined layer transformations and datatype casting
+│       ├── customers.py             # Customer enrichment transformations
+│       ├── products.py              # Product enrichment transformations
+│       ├── orders.py                # Orders enrichment and fact table creation
+│       └── aggregations.py          # Aggregate profit calculations
+│
+├── tests/                           # Unit test cases
+│   ├── conftest.py                  # Shared Spark session fixture
+│   ├── test_common.py               # Unit tests for utility functions
+│   ├── test_dqx_utils.py            # Unit tests for DQX helper functions
+│   ├── test_refined.py              # Tests for refined layer transformations
+│   ├── test_enriched_dimensions.py  # Tests for enriched customer/product logic
+│   ├── test_enriched_orders.py      # Tests for enriched orders fact logic
+│   └── test_aggregations.py         # Tests for aggregate calculations
+│
+├── requirements.txt                 # Python dependencies
+└── README.md                        # Project documentation```
 ```
 
 ---
