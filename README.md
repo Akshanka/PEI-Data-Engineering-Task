@@ -6,7 +6,7 @@ This project implements a data processing system using Databricks and PySpark fo
 
 ## Project Context
 
-**Assignment by:** PEI (Senior Data Engineer Assessment)
+**Assignment by:** PEI
 
 **Objective:** Design and implement a scalable, efficient, and reliable data engineering solution using Databricks that:
 * Processes raw e-commerce sales data
